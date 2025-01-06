@@ -2,6 +2,7 @@ import "./App.css";
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "@emotion/styled";
+import Button from '@mui/material/Button';
 
 const PokemonRow = ({ pokemon, onSelect }) => {
 	return (
@@ -9,7 +10,7 @@ const PokemonRow = ({ pokemon, onSelect }) => {
 			<td>{pokemon.name.english}</td>
 			<td>{pokemon.type.join(", ")}</td>
 			<td>
-				<button onClick={() => onSelect(pokemon)}>Select!</button>
+				<Button variant="contained" onClick={() => onSelect(pokemon)}>Select!</Button>
 			</td>
 		</tr>
 	);
@@ -73,14 +74,14 @@ const TwoColumnsRow = styled.div`
 `;
 const Input = styled.input`
 	width: 100%;
-  font-size: x-large;
-  padding: 0.2rem;
+	font-size: x-large;
+	padding: 0.2rem;
 `;
 const Container = styled.div`
 	width: 100%;
 	margin: 20px auto;
 	padding: 20px 40px;
-`
+`;
 
 function App() {
 	const [filter, setFilter] = React.useState("");
@@ -96,50 +97,52 @@ function App() {
 	return (
 		<main>
 			<Container>
-			<Title>Pokemon Search</Title>
+				<Title>Pokemon Search</Title>
 
-<TwoColumnsRow>
-	<div>
-		<Input
-			type="text"
-			placeholder="Search Name.."
-			value={filter}
-			onChange={(evt) => setFilter(evt.target.value)}
-		/>
-
-		<table width="100%">
-			<thead>
-				<tr>
-					<th>Name</th>
-					<th>Type</th>
-				</tr>
-			</thead>
-			<tbody>
-				{pokemon
-					.filter((pokemon) =>
-						pokemon.name.english
-							.toLocaleLowerCase()
-							.includes(filter.toLowerCase())
-					)
-					.slice(0, 20)
-					.map((pokemon) => (
-						<PokemonRow
-							key={[
-								pokemon.id,
-								pokemon.name.english,
-							].join(":")}
-							pokemon={pokemon}
-							onSelect={(pokemon) =>
-								setSelectedItem(pokemon)
-							}
+				<TwoColumnsRow>
+					<div>
+						<Input
+							type="text"
+							placeholder="Search Name.."
+							value={filter}
+							onChange={(evt) => setFilter(evt.target.value)}
 						/>
-					))}
-			</tbody>
-		</table>
-	</div>
 
-	<div>{selectedItem && <PokemonInfo {...selectedItem} />}</div>
-</TwoColumnsRow>
+						<table width="100%">
+							<thead>
+								<tr>
+									<th>Name</th>
+									<th>Type</th>
+								</tr>
+							</thead>
+							<tbody>
+								{pokemon
+									.filter((pokemon) =>
+										pokemon.name.english
+											.toLocaleLowerCase()
+											.includes(filter.toLowerCase())
+									)
+									.slice(0, 20)
+									.map((pokemon) => (
+										<PokemonRow
+											key={[
+												pokemon.id,
+												pokemon.name.english,
+											].join(":")}
+											pokemon={pokemon}
+											onSelect={(pokemon) =>
+												setSelectedItem(pokemon)
+											}
+										/>
+									))}
+							</tbody>
+						</table>
+					</div>
+
+					<div>
+						{selectedItem && <PokemonInfo {...selectedItem} />}
+					</div>
+				</TwoColumnsRow>
 			</Container>
 		</main>
 	);
