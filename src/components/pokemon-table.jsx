@@ -5,7 +5,10 @@ import PokemonRow from "./pokemon-row";
 import PokemonContext from "../pokemon-context";
 
 const PokemonTable = () => {
-	const { pokemon, filter, setSelectedItem } = React.useContext(PokemonContext);
+	const {
+		state: { pokemon, filter },
+		dispatch,
+	} = React.useContext(PokemonContext);
 
 	return (
 		<table width="100%">
@@ -27,7 +30,12 @@ const PokemonTable = () => {
 						<PokemonRow
 							key={[pokemon.id, pokemon.name.english].join(":")}
 							pokemon={pokemon}
-							onSelect={(pokemon) => setSelectedItem(pokemon)}
+							onSelect={(pokemon) =>
+								dispatch({
+									type: "SET_SELECTED_ITEM",
+									payload: pokemon,
+								})
+							}
 						/>
 					))}
 			</tbody>
@@ -36,13 +44,15 @@ const PokemonTable = () => {
 };
 
 PokemonTable.propTypes = {
-	pokemon: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number,
-		name: PropTypes.shape({
-			english: PropTypes.string,
-		}),
-		type: PropTypes.arrayOf(PropTypes.string),
-	})),
+	pokemon: PropTypes.arrayOf(
+		PropTypes.shape({
+			id: PropTypes.number,
+			name: PropTypes.shape({
+				english: PropTypes.string,
+			}),
+			type: PropTypes.arrayOf(PropTypes.string),
+		})
+	),
 	filter: PropTypes.string,
 	setSelectedItem: PropTypes.func,
 };
