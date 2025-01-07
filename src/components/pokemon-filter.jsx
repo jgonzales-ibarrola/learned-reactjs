@@ -1,8 +1,7 @@
-import React from "react";
 import PropTypes from "prop-types";
 import styled from "@emotion/styled";
 
-import PokemonContext from "../pokemon-context";
+import useStorePokemon from "../stores/useStorePokemon";
 
 const Input = styled.input`
 	width: 100%;
@@ -11,21 +10,15 @@ const Input = styled.input`
 `;
 
 const PokemonFilter = () => {
-	const {
-		state: { filter },
-		dispatch,
-	} = React.useContext(PokemonContext);
+	const filter = useStorePokemon((state) => state.filter);
+	const setFilter = useStorePokemon((state) => state.setFilter);
+
 	return (
 		<Input
 			type="text"
 			placeholder="Search Name.."
 			value={filter}
-			onChange={(evt) =>
-				dispatch({
-					type: "SET_FILTER",
-					payload: evt.target.value,
-				})
-			}
+			onChange={(evt) => setFilter(evt.target.value)}
 		/>
 	);
 };

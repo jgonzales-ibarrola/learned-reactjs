@@ -1,14 +1,12 @@
-import React from "react";
 import PropTypes from "prop-types";
 import PokemonRow from "./pokemon-row";
 
-import PokemonContext from "../pokemon-context";
+import useStorePokemon from "../stores/useStorePokemon";
 
 const PokemonTable = () => {
-	const {
-		state: { pokemon, filter },
-		dispatch,
-	} = React.useContext(PokemonContext);
+	const pokemon = useStorePokemon((state) => state.pokemon);
+	const filter = useStorePokemon((state) => state.filter);
+	const setSelectedItem = useStorePokemon((state) => state.setSelectedItem);
 
 	return (
 		<table width="100%">
@@ -31,10 +29,7 @@ const PokemonTable = () => {
 							key={[pokemon.id, pokemon.name.english].join(":")}
 							pokemon={pokemon}
 							onSelect={(pokemon) =>
-								dispatch({
-									type: "SET_SELECTED_ITEM",
-									payload: pokemon,
-								})
+								setSelectedItem(pokemon)
 							}
 						/>
 					))}
